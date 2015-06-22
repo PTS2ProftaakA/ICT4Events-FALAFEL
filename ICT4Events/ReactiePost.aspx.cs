@@ -17,6 +17,11 @@ namespace ICT4Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Account.Get(HttpContext.Current.User.Identity.Name, database) == null)
+            {
+                Response.Redirect("Inloggen.aspx");
+            }
+            
             if (Session["Reactie"] != null)
             {
                 _b = (Bericht) Session["Reactie"];
@@ -83,11 +88,11 @@ namespace ICT4Events
         protected void btnLike_OnClick(object sender, EventArgs e)
         {
             //Haal hier je Account uit een cookie/session
-            Account acc = Account.Get(4, database);
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             //Haal het bestand op.
 
-            bool liked = tlc.AlreadyExists(_b.ID, 4, "like");
-            bool reported = tlc.AlreadyExists(_b.ID, 4, "ongewenst");
+            bool liked = tlc.AlreadyExists(_b.ID, acc.ID, "like");
+            bool reported = tlc.AlreadyExists(_b.ID, acc.ID, "ongewenst");
             //Dit moet je werkelijk waar aanmaken, nadat je de account_bijdrage hebt aangemaakt voeg je die toe aan de database.
             Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, true, reported);
             //Hier zet je de text van de knop andersom.
@@ -129,10 +134,10 @@ namespace ICT4Events
 
         protected void btnRaporteren_OnClick(object sender, EventArgs e)
         {
-            Account acc = Account.Get(4, database);
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             
-            bool liked = tlc.AlreadyExists(_b.ID, 4, "like");
-            bool reported = tlc.AlreadyExists(_b.ID, 4, "ongewenst");
+            bool liked = tlc.AlreadyExists(_b.ID, acc.ID, "like");
+            bool reported = tlc.AlreadyExists(_b.ID, acc.ID, "ongewenst");
             //Dit moet je werkelijk waar aanmaken, nadat je de account_bijdrage hebt aangemaakt voeg je die toe aan de database.
             Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, liked, true);
             if (!reported)
@@ -310,19 +315,20 @@ namespace ICT4Events
         {
             Button btnSender = sender as Button;
 
-            Account acc = Account.Get(4, database);
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             if (btnSender != null)
             {
                 string id = btnSender.ID.Substring(1);
                 int nr = Convert.ToInt32(id);
                 Bericht b = Bericht.Get(nr, database);
 
-                bool liked = tlc.AlreadyExists(b.ID, 4, "like");
-                bool reported = tlc.AlreadyExists(b.ID, 4, "ongewenst");
-                //Dit moet je werkelijk waar aanmaken, nadat je de account_bijdrage hebt aangemaakt voeg je die toe aan de database.
-                Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, liked, true);
+                bool liked = tlc.AlreadyExists(b.ID, acc.ID, "like");
+                bool reported = tlc.AlreadyExists(b.ID, acc.ID, "ongewenst");
+                
+                
                 if (!reported)
                 {
+                    Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, liked, true);
                     try
                     {
                         if (!liked)
@@ -342,9 +348,17 @@ namespace ICT4Events
                 }
                 else if (reported)
                 {
+                    Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, liked, false);
                     try
                     {
-                        ab.Verwijderen(database);
+                        if (!liked)
+                        {
+                            ab.Verwijderen(database);
+                        }
+                        else
+                        {
+                            ab.Aanpassen(database);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -361,7 +375,7 @@ namespace ICT4Events
             Button btnSender = sender as Button;
 
             //Haal hier je Account uit een cookie/session
-            Account acc = Account.Get(4, database);
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             //Haal het bestand op.
             if (btnSender != null)
             {
@@ -370,8 +384,8 @@ namespace ICT4Events
                 Bericht b = Bericht.Get(nr, database);
 
 
-                bool liked = tlc.AlreadyExists(b.ID, 4, "like");
-                bool reported = tlc.AlreadyExists(b.ID, 4, "ongewenst");
+                bool liked = tlc.AlreadyExists(b.ID, acc.ID, "like");
+                bool reported = tlc.AlreadyExists(b.ID, acc.ID, "ongewenst");
                 //Dit moet je werkelijk waar aanmaken, nadat je de account_bijdrage hebt aangemaakt voeg je die toe aan de database.
                 Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, true, reported);
                 //Hier zet je de text van de knop andersom.

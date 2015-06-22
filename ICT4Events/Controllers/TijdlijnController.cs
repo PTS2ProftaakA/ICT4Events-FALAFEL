@@ -1,6 +1,7 @@
 ﻿using ICT4Events.Models;
 using System;
 using System.Collections.Generic;
+using System.Web;
 
 namespace ICT4Events.Controller
 {
@@ -225,12 +226,13 @@ namespace ICT4Events.Controller
 
         public void MaakBestand(Categorie categorie, string bestandPad)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             List<string>[] table;
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
             //Eerst maak ik een bijdrage, het getal 4 (account_id) moet verandert worden in het account_id in een cookie ofzo.
-            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", 4, datum, "bestand"));
+            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", acc.ID, datum, "bestand"));
 
             List<string> kolom = new List<string>();
             kolom.Add("MAX(ID)");
@@ -243,11 +245,12 @@ namespace ICT4Events.Controller
 
         public void MaakCategorie(string naam, Categorie c)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
             //Eerst maak ik een bijdrage, het getal 1 (account_id) moet verandert worden in het account_id in een cookie ofzo.
-            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", 4, datum, "categorie"));
+            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", acc.ID, datum, "categorie"));
             
             List<string>[] table;
             List<string> kolom = new List<string>();
@@ -263,12 +266,13 @@ namespace ICT4Events.Controller
         //Heb hier een 2de constructor voor gemaakt zonder de categorie, dit is dan dus een main categorie
         public void MaakCategorie(string naam)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
             //Eerst maak ik een bijdrage, het getal 1 (account_id) moet verandert worden in het account_id in een cookie ofzo.
             database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", 
-                4, datum, "categorie"));
+                acc.ID, datum, "categorie"));
 
             List<string>[] table;
             List<string> kolom = new List<string>();
@@ -343,13 +347,14 @@ namespace ICT4Events.Controller
 
         public void MaakBericht(string text, string titel, int b_id)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
 
 
             database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')",
-                4, datum, "bericht"));
+                acc.ID, datum, "bericht"));
             List<string>[] table;
             List<string> kolom = new List<string>();
             kolom.Add("MAX(ID)");
