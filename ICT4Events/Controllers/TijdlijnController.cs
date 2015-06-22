@@ -63,18 +63,6 @@ namespace ICT4Events.Controller
             return bestanden;
         }
 
-        public List<Bestand> HaalOpGerapporteerdeBestanden(int percentage, int eventID)
-        {
-            //Alle bestanden die zo vaak gerapporteerd zijn
-            return null;
-        }
-
-        public List<Bericht> HaalOpGeRaporteerdeBerichten(int percentage, int eventID)
-        {
-            //Alle berichten die gerapporteerd zijn
-            return null;
-        }
-
         public List<Categorie> HaalAlleOpCategorieën()
         {
             //Alle categorieën ophalen
@@ -161,7 +149,7 @@ namespace ICT4Events.Controller
             List<string>[] table;
             List<Account_Bijdrage> alleAB = new List<Account_Bijdrage>();
 
-            string query = String.Format(@"SELECT ""account_id"", ""bijdrage_id"", ""like"", ""ongewenst"" FROM ACCOUNT_BIJDRAGE AB WHERE ""bijdrage_id"" = {0}", bijdrage_id);
+            string query = String.Format(@"SELECT ""account_id"", ""bijdrage_id"", ""like"", ""ongewenst"" FROM ACCOUNT_BIJDRAGE AB WHERE ""bijdrage_id"" = {0} AND ""like"" = 1", bijdrage_id);
             List<string> kolommen = new List<string>();
             kolommen.Add("ACCOUNT_ID");
             kolommen.Add("BIJDRAGE_ID");
@@ -193,12 +181,6 @@ namespace ICT4Events.Controller
             }
 
             return alleAB;
-        }
-
-        public List<Account_Bijdrage> HaalOpAccountBijdrageVanReactie(int bijdrage_id)
-        {
-            //Alle Account_Bijdrage ophalen van een reactie
-            return null;
         }
 
         public void MaakBestand(Categorie categorie, string bestandPad)

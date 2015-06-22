@@ -64,10 +64,10 @@ namespace ICT4Events
             bool reported = tlc.AlreadyExists(b.ID, 4, "ongewenst");
 
             //Je maakt hier de like/ongewenst aan of verwijder je hem.
-            Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, true, reported);
             
             if (!liked)
             {
+                Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, true, reported);
                 //Hier voeg je hem toe aan de database of pas je hem aan.
                 try
                 {
@@ -91,6 +91,7 @@ namespace ICT4Events
             {
                 try
                 {
+                    Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, false, reported);
                     //Hier verwijder je hem van de database of pas je hem aan.
                     if (!reported)
                     {
@@ -132,10 +133,10 @@ namespace ICT4Events
             bool liked = tlc.AlreadyExists(b.ID, 4, "like");
             bool reported = tlc.AlreadyExists(b.ID, 4, "ongewenst");
             //Hier maak je het bijdrage aan
-            Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, liked, true);
 
             if (!reported)
             {
+                Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, liked, true);
                 //Hier voeg je hem toe
                 try
                 {
@@ -156,6 +157,7 @@ namespace ICT4Events
             }
             else if (reported)
             {
+                Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, liked, false);
                 //Hier verwijder of pas je hem aan.
                 try
                 {
@@ -460,6 +462,7 @@ namespace ICT4Events
             if (ddlCategorie.SelectedValue == "Main")
             {
                 //TODO ERROR : mag niet in main posten
+                Response.Write("<script>alert('Mag niet in de main categorie posten.')</script>");
                 return;
             }
             //Hier maak je een nieuw bestand aan in de database
@@ -474,8 +477,10 @@ namespace ICT4Events
                 if(extension == ".gliffy")
                 {
                     //TODO ERROR: Verboden extensie
+                    Response.Write("<script>alert('Deze extensie is niet toegestaan.')</script>");
                     return;
                 }
+                string encoded = System.Security.SecurityElement.Escape(Path.GetFileName(fileInput.PostedFile.FileName));
                 string targetFile = Path.Combine("\\TEST\\", Path.GetFileName(fileInput.PostedFile.FileName));
                 try
                 {
@@ -484,7 +489,7 @@ namespace ICT4Events
                         //Maak hier het bestand echt aan en zet het in de database
                         string pathToBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                         fileInput.PostedFile.SaveAs(pathToBaseDirectory + targetFile);
-                        tlc.MaakBestand(c, Path.GetFileName(fileInput.PostedFile.FileName));
+                        tlc.MaakBestand(c, encoded);
                     }
                     else
                     {
