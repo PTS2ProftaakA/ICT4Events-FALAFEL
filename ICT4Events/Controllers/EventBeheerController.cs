@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using ICT4Events.Models;
 
 namespace ICT4Events.Controllers
@@ -79,7 +80,7 @@ namespace ICT4Events.Controllers
             return events;
         }
 
-        //Het ophalen van alle betalende en niet betalende gebruikers.
+        //Het ophalen van alle aanwezige en niet aanwezige gebruikers.
         public List<string>[] GebruikersOphalen()
         {
             List<string>[] dataTable = _masterController.KrijgAlleGebruikersAanwezigheid();
@@ -101,6 +102,30 @@ namespace ICT4Events.Controllers
             }
 
             return gebruikers;
+        }
+
+        //Het ophalen van alle betalende en niet betalende gebruikers.
+        public List<Plek>[] PlekkenOphalen(List<Locatie> locaties)
+        {
+            List<string>[] dataTable = _masterController.KrijgAlleBeschikbaarheidPlekken();
+
+            List<Plek>[] plekken = new List<Plek>[2];
+            plekken[0] = new List<Plek>();
+            plekken[1] = new List<Plek>();
+
+            for (int i = 0; i < dataTable[0].Count(); i++)
+            {
+                if (Convert.ToInt32(dataTable[4][i]) == 0)
+                {
+                    plekken[0].Add(new Plek(Convert.ToInt32(dataTable[0][i]), locaties.Find(locatie => locatie.ID == Convert.ToInt32(dataTable[1][i])), Convert.ToInt32(dataTable[2][i]), Convert.ToInt32(dataTable[3][i]), null));
+                }
+                else
+                {
+                    plekken[1].Add(new Plek(Convert.ToInt32(dataTable[0][i]), locaties.Find(locatie => locatie.ID == Convert.ToInt32(dataTable[1][i])), Convert.ToInt32(dataTable[2][i]), Convert.ToInt32(dataTable[3][i]), null));
+                }
+            }
+
+            return plekken;
         }
     }
 }

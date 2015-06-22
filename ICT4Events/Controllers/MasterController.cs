@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using ICT4Events.Models;
 using Oracle.ManagedDataAccess.Client;
 
@@ -164,14 +166,34 @@ namespace ICT4Events.Controllers
             return dataTable;
         }
 
+        //Het verkrijgen van de beschikbaarheid van alle plekken door middel van een procedure.
+        public List<string>[] KrijgAlleBeschikbaarheidPlekken()
+        {
+            List<OracleParameter> inParameters = new List<OracleParameter>();
+
+            List<OracleParameter> outParameters = new List<OracleParameter>();
+
+            outParameters.Add(new OracleParameter("plekken", OracleDbType.RefCursor));
+
+            List<string> columns = new List<string>();
+            columns.Add("ID");
+            columns.Add("locatie_id");
+            columns.Add("nummer");
+            columns.Add("capaciteit");
+            columns.Add("gereserveerd");
+            
+            List<string>[] dataTable = _database.ExecuteProcedure("lijstPlekken", columns, inParameters, outParameters);
+            return dataTable;
+        }
+
         //Het verwijderen van een account.
         //Als het niet lukt word er een specifieke error meegegeven door middel van een procedure.
         public string VerwijderAccount(string gebruikersNaam)
         {
             List<OracleParameter> inParameters = new List<OracleParameter>();
 
-            inParameters.Add(new OracleParameter("gebruikersnaam", gebruikersNaam)); 
-            
+            inParameters.Add(new OracleParameter("gebruikersnaam", gebruikersNaam));
+
             List<OracleParameter> outParameters = new List<OracleParameter>();
 
             List<string> columns = new List<string>();
@@ -181,7 +203,7 @@ namespace ICT4Events.Controllers
                 _database.ExecuteProcedure("accountVerwijderen", columns, inParameters, outParameters);
                 return "";
             }
-            catch(Exception error)
+            catch (Exception error)
             {
                 return error.Message;
             }
