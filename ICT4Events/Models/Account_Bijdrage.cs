@@ -59,17 +59,35 @@ namespace ICT4Events.Models
 
         public void Toevoegen(Database.Database database)
         {
-
+            //Bij de Query maak je gebruik van het huidige 'Account_Bijdrage'
+            int iLike = 0;
+            int iOngewenst = 0;
+            if (_like)
+                iLike = 1;
+            if (_ongewenst)
+                iOngewenst = 1;
+            string query = String.Format(@"INSERT INTO ACCOUNT_BIJDRAGE(""account_id"", ""bijdrage_id"", ""like"", ""ongewenst"") VALUES({0}, {1}, {2}, {3})", _account.ID, _bijdrage.ID, iLike, iOngewenst);
+            database.EditDatabase(query);
         }
 
         public void Aanpassen(Database.Database database)
         {
-
+            int iLike = 0;
+            int iOngewenst = 0;
+            if (_like)
+                iLike = 1;
+            if (_ongewenst)
+                iOngewenst = 1;
+            string query = String.Format(@"UPDATE ACCOUNT_BIJDRAGE SET ""like"" = {0}, ""ongewenst"" = {1} WHERE ""account_id"" = {2} AND ""bijdrage_id"" = {3}",
+                iLike, iOngewenst, _account.ID, _bijdrage.ID);
+            database.EditDatabase(query);
         }
 
         public void Verwijderen(Database.Database database)
         {
-
+            //Hier ga je een record verwijderen van Account_Bijdrage
+            string query = String.Format(@"DELETE FROM ACCOUNT_BIJDRAGE WHERE ""account_id"" = {0} AND ""bijdrage_id"" = {1}", _account.ID, _bijdrage.ID);
+            database.EditDatabase(query);
         }
     }
 }
