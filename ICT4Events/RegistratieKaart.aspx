@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Registratie.Master" AutoEventWireup="true" CodeBehind="RegistratieKaart.aspx.cs" Inherits="ICT4Events.RegistratieKaart" %>
 <asp:Content ID="Content" ContentPlaceHolderID="ContentGoesHere" runat="server">
     <form class="form-horizontal col-lg-6 col-lg-offset-3" runat="server">
-        <h2><br/></h2>
+        <h2><br/>Plek Kiezen</h2>
         <fieldset>
             <div class="col-lg-3">
                 <asp:DropDownList CssClass="form-control" ID="dropPlaatsen" runat="server" AutoPostBack="True" />

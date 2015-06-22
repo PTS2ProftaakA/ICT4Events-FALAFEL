@@ -265,7 +265,7 @@ namespace ICT4Events
         protected void btnVerder_OnClick(object sender, EventArgs e)
         {
             //Navigeer naar de volgende pagina (Acountgegevens)
-            Response.Redirect("GUI_NieuweGebruiker_Vrienden.aspx");
+            Response.Redirect("./RegistratieVrienden.aspx");
         }
     }
 }

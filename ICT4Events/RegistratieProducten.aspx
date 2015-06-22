@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Registratie.Master" AutoEventWireup="true" CodeBehind="RegistratieProducten.aspx.cs" Inherits="ICT4Events.RegistratieProducten" %>
 <asp:Content ID="Content" ContentPlaceHolderID="ContentGoesHere" runat="server">
     <form class="form-horizontal col-lg-6 col-lg-offset-3" runat="server">
-        <h2><br/></h2>
+        <h2><br/>Producten Huren</h2>
         <fieldset>
             <div class="col-lg-6">
                 <div class="input-group">
