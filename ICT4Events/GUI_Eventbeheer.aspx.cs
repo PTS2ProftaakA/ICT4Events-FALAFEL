@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using ICT4Events.Controllers;
 using ICT4Events.Models;
@@ -95,6 +98,8 @@ namespace ICT4Events
                 }
                 else
                 {
+                    _events = Session["events"] as List<Event>;
+
                     Event geselecteerdEvent =
                         _events.Find(
                             selectedEvent => selectedEvent.ID == Convert.ToInt32(ddlEvenementen.SelectedItem.Value));
@@ -262,6 +267,32 @@ namespace ICT4Events
 
                     btnEvenementCreeren.Text = "Aanmaken";
                 }
+            }
+            else
+            {
+                //pagina word ververst als de lijst niet gevonden word.
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+
+        protected void btnPlekkenOphalen_OnClick(object sender, EventArgs e)
+        {
+            if (Session["locaties"] != null)
+            {
+                List<Plek>[] plekken = _eventBeheerController.PlekkenOphalen(Session["locaties"] as List<Locatie>);
+
+                foreach (Plek plek in plekken[0])
+                {
+                    ddlVerkrijgbarePlekken.Items.Add(new ListItem(plek.Nummer.ToString(), plek.ID.ToString()));
+                }
+
+                foreach (Plek plek in plekken[1])
+                {
+                    ddlBezettePlekken.Items.Add(new ListItem(plek.Nummer.ToString(), plek.ID.ToString()));
+                }
+
+                ddlVerkrijgbarePlekken.DataBind();
+                ddlBezettePlekken.DataBind();
             }
             else
             {

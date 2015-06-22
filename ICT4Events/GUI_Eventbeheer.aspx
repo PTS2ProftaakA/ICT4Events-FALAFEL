@@ -63,6 +63,18 @@
         <asp:Label AssociatedControlID="ddlAfwezigen" runat="server" AppendDataBoundItems="true" Text="Afwezigen."></asp:Label>
         <br/>
         <asp:DropDownList ID="ddlAfwezigen" AutoPostBack="True" runat="server"></asp:DropDownList>
+        <br/>
+        <br />
+        <asp:Button ID="btnPlekkenOphalen" runat="server" CausesValidation="False" OnClick="btnPlekkenOphalen_OnClick" Text="Beschikbaarheid plekken ophalen" />
+        <br/> 
+        <asp:Label AssociatedControlID="ddlVerkrijgbarePlekken" runat="server" AppendDataBoundItems="true" Text="Verkrijgbare plekken."></asp:Label>
+        <br/>
+        <asp:DropDownList ID="ddlVerkrijgbarePlekken" AutoPostBack="True" runat="server"></asp:DropDownList>
+        <br/>
+        <br/>
+        <asp:Label AssociatedControlID="ddlVerkrijgbarePlekken" runat="server" AppendDataBoundItems="true" Text="Bezette plekken."></asp:Label>
+        <br/>
+        <asp:DropDownList ID="ddlBezettePlekken" AutoPostBack="True" runat="server"></asp:DropDownList>
     </form>
 </body>
 </html>
