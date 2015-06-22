@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -35,13 +36,64 @@ namespace ICT4Events
             //Check of er al een Like is -- Voor nu gebruik ik user ID 4, dit moet later worden vervangen door het echte user id
             bool liked = tlc.AlreadyExists(_b.ID, 4, "like");
             bool reported = tlc.AlreadyExists(_b.ID, 4, "ongewenst");
-            //De image
+            //Username weergeven
             lbUsername.Text = _b.Account.Gebruikersnaam;
             pnlBijdrage.Controls.Clear();
-            //TODO: meerdere extensies mogelijk maken
-            System.Web.UI.WebControls.Image i = new System.Web.UI.WebControls.Image();
-            i.ImageUrl = _b.BestandsLocatie;
-            pnlBijdrage.Controls.Add(i);
+
+            //Zet het juiste bestand erin.
+            string extension = Path.GetExtension(_b.BestandsLocatie);
+            string pathToBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string path = Path.Combine("TEST\\", _b.BestandsLocatie);
+            //Voeg het bestandsnaam zonder extensie toe
+            Label l = new Label();
+            l.Text = Path.GetFileNameWithoutExtension(_b.BestandsLocatie);
+            pnlBijdrage.Controls.Add(l);
+            pnlBijdrage.Controls.Add(new LiteralControl("<br />"));
+            //Hier kijken we welke extensie het is en handelen we het zo af.
+            if (extension == ".jpg" || extension == ".png")
+            {
+                var i = new System.Web.UI.WebControls.Image { ImageUrl = path };
+                i.AlternateText = _b.BestandsLocatie;
+                i.Height = 200;
+                pnlBijdrage.Controls.Add(i);
+                pnlBijdrage.Height = 250;
+            }
+            else if (extension == ".mp3")
+            {
+                var s = new LiteralControl(@"<audio src=""" + path + @""" controls=""controls""></audio> ");
+                pnlBijdrage.Controls.Add(s);
+                pnlBijdrage.Height = 175;
+            }
+            else if (extension == ".mp4")
+            {
+                var v = new LiteralControl(@"<video height=""200"" controls><source src=""" + path + @"""></video>");
+                pnlBijdrage.Controls.Add(v);
+                pnlBijdrage.Height = 250;
+            }
+            else if (extension == ".txt")
+            {
+                Label lblTxt = new Label();
+                try
+                {
+                    using (StreamReader sr = new StreamReader(pathToBaseDirectory + path))
+                    {
+                        string line = sr.ReadToEnd();
+                        lblTxt.Text = line;
+                        pnlBijdrage.Controls.Add(lblTxt);
+                        pnlBijdrage.Height = 250;
+                    }
+                }
+                catch (Exception e)
+                {
+                    //Console.WriteLine("The file could not be read:");
+                    //Console.WriteLine(e.Message);
+                }
+            }
+            else
+            {
+                //Als het nog niet is gevonden in alle hierboven genoemde extensies.
+                pnlBijdrage.Height = 150;
+            }
 
             //De verwijder knop.
             Account sessionAccount = (Account) Session["User"];
