@@ -1,0 +1,48 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="ICT4Events.Main" %>
+<%@ Import Namespace="ICT4Events" %>
+<!DOCTYPE html>
+<html>
+    <head runat="server">
+        <link href="Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="Content/roboto.min.css" rel="stylesheet" />
+        <link href="Content/material.min.css" rel="stylesheet" />
+        <link href="Content/ripples.css" rel="stylesheet" />
+        <title>ICT4Events</title>
+    </head>
+    <body>
+        <div class="navbar navbar-default">
+            <div class="col-lg-6 col-lg-offset-3">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">ICT4Events</a>
+                </div>
+                <div class="navbar-collapse collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="Bestandsbeheer.aspx">Bestandsbeheer</a></li>
+                        <li><a href="#" id="uitloggen" runat="server">Uitloggen</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" <% if (!ActiveDirectory.UserIsAdministrator(HttpContext.Current.User.Identity.Name)) Response.Write("style=\"display: none;\""); %>>
+                        <li class="dropdown">
+                            <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="False">Admin Tools<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="GUI_Eventbeheer.aspx">Eventbeheer</a></li>
+                                <li><a href="GUI_Productbeheer.aspx">Productbeheer</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-lg-offset-3">
+            <asp:ContentPlaceHolder ID="ContentGoesHere" runat="server"/>
+        </div>
+        <script src="Scripts/jquery-1.9.1.min.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/ripples.min.js"></script>
+        <script src="Scripts/material.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $.material.init();
+            });
+        </script>
+    </body>
+</html>

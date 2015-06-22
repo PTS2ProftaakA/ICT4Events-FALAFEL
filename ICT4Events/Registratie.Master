@@ -1,0 +1,25 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Registratie.master.cs" Inherits="ICT4Events.Registratie" %>
+<!DOCTYPE html>
+<html>
+    <head runat="server">
+        <link href="Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="Content/roboto.min.css" rel="stylesheet" />
+        <link href="Content/material.min.css" rel="stylesheet" />
+        <link href="Content/ripples.css" rel="stylesheet" />
+        <title>ICT4Events - Registratie</title>
+    </head>
+    <body>
+        <div>
+            <asp:ContentPlaceHolder ID="ContentGoesHere" runat="server"/>
+        </div>
+        <script src="Scripts/jquery-1.9.1.min.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/ripples.min.js"></script>
+        <script src="Scripts/material.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $.material.init();
+            });
+        </script>
+    </body>
+</html>

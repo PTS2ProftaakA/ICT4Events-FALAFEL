@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICT4Events", "ICT4Events\ICT4Events.csproj", "{CE5C71A4-7174-4824-A69D-04C6FC7D0073}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICT4Events.Tests", "ICT4Events.Tests\ICT4Events.Tests.csproj", "{5E331F4A-A18B-4ED1-B236-1F566A6CF31D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE5C71A4-7174-4824-A69D-04C6FC7D0073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE5C71A4-7174-4824-A69D-04C6FC7D0073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE5C71A4-7174-4824-A69D-04C6FC7D0073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE5C71A4-7174-4824-A69D-04C6FC7D0073}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E331F4A-A18B-4ED1-B236-1F566A6CF31D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E331F4A-A18B-4ED1-B236-1F566A6CF31D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E331F4A-A18B-4ED1-B236-1F566A6CF31D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E331F4A-A18B-4ED1-B236-1F566A6CF31D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
