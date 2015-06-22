@@ -60,7 +60,7 @@ namespace ICT4Events
             phReactie.Controls.Add(new LiteralControl("<br/>"));
             //De verwijder knop.
             Account sessionAccount = (Account)Session["User"];
-            if (_b.Account.ID == sessionAccount.ID)
+            if (_b.Account.ID == acc.ID)
             {
                 phVerwijder.Controls.Clear();
                 Button btnVerwijderen = new Button();
@@ -270,8 +270,7 @@ namespace ICT4Events
                     btnReactie.Click += btnReactie_Click;  
                         
                     //Button voor het verwijderen
-                    Account sessionAccount = (Account)Session["User"];
-                    if (br.Account.ID == sessionAccount.ID)
+                    if (br.Account.ID == acc.ID)
                     {
                         Button btnBerichtVerwijderen = new Button();
                         btnBerichtVerwijderen.Text = "X";

@@ -363,12 +363,19 @@ namespace ICT4Events
                     int i = Convert.ToInt32(ddlCategorie.SelectedValue.Substring(4));
                     Categorie c = Categorie.Get(i, database);
                     //Kijken of de categorie al bestaat.
-                    if (categorieList.Any(cat => cat.Naam == catText && cat.SubCategorie.ID == i))
+                    foreach (Categorie cat in categorieList)
                     {
-                        Response.Write("<script>alert('Deze categorie bestaat al')</script>");
-                        return;
+                        if (cat.SubCategorie != null)
+                        {
+                            if (cat.Naam == catText && cat.SubCategorie.ID == c.ID)
+                            {
+                                Response.Write("<script>alert('Deze categorie bestaat al')</script>");
+                                return;
+                            }
+                        }
+                        
                     }
-                    tlc.MaakCategorie(catText, c); 
+                    tlc.MaakCategorie(catText, c);
                 }
                 RefreshCat();
             }
@@ -793,8 +800,7 @@ namespace ICT4Events
                     btnReactie.CausesValidation = false;
 
                     //Button voor het verwijderen
-                    Account sessionAccount = (Account)Session["User"];
-                    if (br.Account.ID == sessionAccount.ID)
+                    if (br.Account.ID == acc.ID)
                     {
                         #region Controls met verwijderen toevoegen
                         Button btnBerichtVerwijderen = new Button();

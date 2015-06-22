@@ -326,8 +326,7 @@ namespace ICT4Events
                     btnReactie.Click += btnReactie_Click;
 
                     //Button voor het verwijderen
-                    Account sessionAccount = (Account)Session["User"];
-                    if (br.Account.ID == sessionAccount.ID)
+                    if (br.Account.ID == acc.ID)
                     {
                         Button btnBerichtVerwijderen = new Button();
                         btnBerichtVerwijderen.Text = "X";
