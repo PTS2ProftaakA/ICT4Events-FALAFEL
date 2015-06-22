@@ -1,6 +1,7 @@
 ﻿using ICT4Events.Models;
 using System;
 using System.Collections.Generic;
+using System.Web;
 
 namespace ICT4Events.Controller
 {
@@ -31,6 +32,46 @@ namespace ICT4Events.Controller
                 //Geen idee waar ik op moet zoeken, zoek momenteel op de bestandslocatie
                 query = String.Format(@"SELECT B.""bijdrage_id"", B.""categorie_id"", B.""bestandslocatie"", B.""grootte"", BD.""account_id"", TO_CHAR(BD.""datum"", 'dd-mm-yy HH24:MI:SS') AS DATUM FROM BESTAND B, BIJDRAGE BD, CATEGORIE C WHERE B.""bijdrage_id"" = BD.ID AND B.""categorie_id"" = C.""bijdrage_id"" AND C.""naam"" LIKE '{0}'", specificatie);
             }
+
+            List<string> kolommen = new List<string>();
+            kolommen.Add("BIJDRAGE_ID");
+            kolommen.Add("CATEGORIE_ID");
+            kolommen.Add("BESTANDSLOCATIE");
+            kolommen.Add("GROOTTE");
+            kolommen.Add("ACCOUNT_ID");
+            kolommen.Add("DATUM");
+
+            table = database.SelectQuery(query, kolommen);
+            #endregion
+
+            if (table[0].Count > 1)
+            {
+                for (int i = 1; i < table[0].Count; i++)
+                {
+                    int bijdrageId = Convert.ToInt32(table[0][i]);
+                    int categorieId = Convert.ToInt32(table[1][i]);
+                    string locatie = Convert.ToString(table[2][i]);
+                    int grootte = Convert.ToInt32(table[3][i]);
+                    int accountId = Convert.ToInt32(table[4][i]);
+                    DateTime datum = DateTime.Parse(Convert.ToString(table[5][i]));
+
+                    Account acc = Account.Get(accountId, database);
+                    Categorie c = Categorie.Get(categorieId, database);
+                    Bestand b = new Bestand(bijdrageId, acc, datum, Bijdrage.BijdrageType.Bestand, c, locatie, grootte);
+                    bestanden.Add(b);
+                }
+            }
+            return bestanden;
+        }
+
+        public List<Bestand> HaalOpBestandenMetExtensie(string extensie)
+        {
+            //Zoeken naar bestanden met een specificatie
+            List<Bestand> bestanden = new List<Bestand>();
+            #region Query
+            List<string>[] table;
+            //Zoek op de ingegeven extensie
+            string query = String.Format(@"SELECT B.""bijdrage_id"", B.""categorie_id"", B.""bestandslocatie"", B.""grootte"", BD.""account_id"", TO_CHAR(BD.""datum"", 'dd-mm-yy HH24:MI:SS') AS DATUM FROM BESTAND B, BIJDRAGE BD WHERE B.""bijdrage_id"" = BD.ID AND B.""bestandslocatie"" LIKE '%{0}'", extensie);
 
             List<string> kolommen = new List<string>();
             kolommen.Add("BIJDRAGE_ID");
@@ -185,12 +226,13 @@ namespace ICT4Events.Controller
 
         public void MaakBestand(Categorie categorie, string bestandPad)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             List<string>[] table;
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
             //Eerst maak ik een bijdrage, het getal 4 (account_id) moet verandert worden in het account_id in een cookie ofzo.
-            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", 4, datum, "bestand"));
+            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", acc.ID, datum, "bestand"));
 
             List<string> kolom = new List<string>();
             kolom.Add("MAX(ID)");
@@ -203,11 +245,12 @@ namespace ICT4Events.Controller
 
         public void MaakCategorie(string naam, Categorie c)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
             //Eerst maak ik een bijdrage, het getal 1 (account_id) moet verandert worden in het account_id in een cookie ofzo.
-            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", 4, datum, "categorie"));
+            database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", acc.ID, datum, "categorie"));
             
             List<string>[] table;
             List<string> kolom = new List<string>();
@@ -223,12 +266,13 @@ namespace ICT4Events.Controller
         //Heb hier een 2de constructor voor gemaakt zonder de categorie, dit is dan dus een main categorie
         public void MaakCategorie(string naam)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
             //Eerst maak ik een bijdrage, het getal 1 (account_id) moet verandert worden in het account_id in een cookie ofzo.
             database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')", 
-                4, datum, "categorie"));
+                acc.ID, datum, "categorie"));
 
             List<string>[] table;
             List<string> kolom = new List<string>();
@@ -303,13 +347,14 @@ namespace ICT4Events.Controller
 
         public void MaakBericht(string text, string titel, int b_id)
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             DateTime d = DateTime.Now;
             string str = String.Format("{0:00}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", d.Day, d.Month, d.Year, d.Hour, d.Minute, d.Second);
             string datum = d.ToString(str);
 
 
             database.EditDatabase(String.Format(@"INSERT INTO BIJDRAGE(""account_id"", ""datum"", ""soort"") VALUES( {0} , to_date('{1}', 'DD-MM-YY HH24:MI:SS'), '{2}')",
-                4, datum, "bericht"));
+                acc.ID, datum, "bericht"));
             List<string>[] table;
             List<string> kolom = new List<string>();
             kolom.Add("MAX(ID)");
@@ -322,6 +367,28 @@ namespace ICT4Events.Controller
             query = String.Format(@"INSERT INTO BIJDRAGE_BERICHT(""bijdrage_id"", ""bericht_id"") VALUES({0}, {1})", b_id, id);
             database.EditDatabase(query);
 
+        }
+
+        public List<string> GetExtensions()
+        {
+            List<string> extensies = new List<string>();
+            List<string>[] table;
+            List<string> kolommen = new List<string>();
+            kolommen.Add("EXTENTIE");
+            string query = @"SELECT DISTINCT(substr(""bestandslocatie"", instr(""bestandslocatie"", '.', -1))) AS EXTENTIE FROM BESTAND";
+
+            table = database.SelectQuery(query, kolommen);
+
+            if (table[0].Count > 1)
+            {
+                for (int i=1; i < table[0].Count; i++)
+                {
+                    string extensie = Convert.ToString(table[0][i]);
+                    extensies.Add(extensie);
+                }
+            }
+
+            return extensies;
         }
     }
 }

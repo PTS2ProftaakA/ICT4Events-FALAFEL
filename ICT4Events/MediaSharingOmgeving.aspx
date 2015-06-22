@@ -10,9 +10,13 @@
     <form id="form1" runat="server">
     <div>
         <!-- TODO  0De hoogte gelijk maken aan de hoogte van het bestand + de knoppen eronder, en de breedtje 1 waarde -->
-        <asp:Label ID="lbSorteer" runat="server" Text="Sorteer:"></asp:Label>
+        <asp:Label ID="lbSorteerCat" runat="server" Text="Sorteer op Categorie:"></asp:Label>
         <asp:DropDownList ID="ddlSearch" runat="server" OnSelectedIndexChanged="ddlSearch_OnSelectedIndexChanged" AutoPostBack="True">
             <asp:ListItem Text="Alles" Value="AlleCategorie"></asp:ListItem>
+        </asp:DropDownList><br/><br/>
+        <asp:Label ID="lblSorteerExt" runat="server" Text="Sorteer op Extentie:"></asp:Label>
+        <asp:DropDownList ID="ddlExtensionSearch" runat="server" OnSelectedIndexChanged="ddlExtensionSearch_OnSelectedIndexChanged" AutoPostBack="True">
+            <asp:ListItem Text="Alles" Value="AlleExtensies"></asp:ListItem>
         </asp:DropDownList><br/><br/>
             <asp:PlaceHolder ID="phBestand" runat="server"></asp:PlaceHolder>
             <br />

@@ -107,6 +107,44 @@ namespace ICT4Events.Models
             return accounts;
         }
 
+        public static Account Get(string username, Database.Database database)
+        {
+            List<string>[] table;
+            string query = String.Format(@"SELECT ID, ""gebruikersnaam"", ""email"", ""activatiehash"", ""geactiveerd"" FROM ACCOUNT WHERE ""gebruikersnaam"" = '{0}'", username);
+            List<string> kolommen = new List<string>();
+            kolommen.Add("ID");
+            kolommen.Add("GEBRUIKERSNAAM");
+            kolommen.Add("EMAIL");
+            kolommen.Add("ACTIVATIEHASH");
+            kolommen.Add("GEACTIVEERD");
+
+            table = database.SelectQuery(query, kolommen);
+
+            if (table[0].Count > 1)
+            {
+                for (int i = 1; i < table[0].Count; i++)
+                {
+                    bool actief = true;
+                    if (table[4][i] != null)
+                    {
+                        int test;
+                        if (int.TryParse(Convert.ToString(table[4][i]), out test)) ;
+                        {
+                            if (test != 1)
+                            {
+                                actief = false;
+                            }
+                        }
+
+                    }
+                    Account acc = new Account(Convert.ToInt32(table[0][i]), Convert.ToString(table[1][i]), Convert.ToString(table[2][i]), Convert.ToString(table[3][i]), actief);
+                    return acc;
+                }
+            }
+
+            return null;
+        }
+
         public static Account Get(int id, Database.Database database)
         {
             List<string>[] table;
