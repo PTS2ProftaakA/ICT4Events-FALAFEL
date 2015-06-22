@@ -12,7 +12,7 @@ namespace ICT4Events.Controllers
         public void eMail(string authenticatieCode, string emailadres, string gebruikersnaam, string barcodeString)
         {
             //Bestandslocatie waar het plaatje van de barcode word opgeslagen.
-            string bestandslocatie = "C:/Users/Martijn/Desktop/testBarcode.jpg";
+            string bestandslocatie = @"C:\Users\Thijs\Desktop\barcode" + gebruikersnaam + ".jpg";
 
             //Het aanmaken van een plaatje van een barcode.
             //Deze barcode staat gelijk aan de barcode van het polsbandje van het account.
