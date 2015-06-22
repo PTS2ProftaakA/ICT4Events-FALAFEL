@@ -38,9 +38,10 @@ namespace ICT4Events
 
         public void DesignFile()
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             //Check of er al een Like is -- Voor nu gebruik ik user ID 4, dit moet later worden vervangen door het echte user id
-            bool liked = tlc.AlreadyExists(_b.ID, 4, "like");
-            bool reported = tlc.AlreadyExists(_b.ID, 4, "ongewenst");
+            bool liked = tlc.AlreadyExists(_b.ID, acc.ID, "like");
+            bool reported = tlc.AlreadyExists(_b.ID, acc.ID, "ongewenst");
             //Username weergeven
             lbUsername.Text = _b.Account.Gebruikersnaam;
             pnlBijdrage.Controls.Clear();
@@ -100,9 +101,7 @@ namespace ICT4Events
                 Response.Redirect("MediaSharingOmgeving.aspx");
             }
 
-            //De verwijder knop.
-            Account sessionAccount = (Account) Session["User"];
-            if (_b.Account.ID == sessionAccount.ID)
+            if (_b.Account.ID == acc.ID)
             {
                 phVerwijder.Controls.Clear();
                 Button btnVerwijderen = new Button();
@@ -289,12 +288,13 @@ namespace ICT4Events
         {
             phBerichten.Controls.Clear();
             List<Bericht> berichten = tlc.Getberichten(_b.ID);
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             if (berichten != null)
             {
                 foreach (Bericht br in berichten)
                 {
-                    bool liked = tlc.AlreadyExists(br.ID, 4, "like");
-                    bool reported = tlc.AlreadyExists(br.ID, 4, "ongewenst");
+                    bool liked = tlc.AlreadyExists(br.ID, acc.ID, "like");
+                    bool reported = tlc.AlreadyExists(br.ID, acc.ID, "ongewenst");
                     
                     Label accountNaam = new Label();
                     accountNaam.Text = "Door: " + br.Account.Gebruikersnaam;
