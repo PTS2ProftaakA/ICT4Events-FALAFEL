@@ -151,6 +151,8 @@ namespace ICT4Events
             //Alle evenementen worden opgehaald.
             if (Session["events"] != null)
             {
+                _events = Session["events"] as List<Event>;
+
                 Event geselecteerdEvent =
                         _events.Find(
                             selectedEvent => selectedEvent.ID == Convert.ToInt32(ddlEvenementen.SelectedItem.Value));
@@ -182,54 +184,6 @@ namespace ICT4Events
             }
         }
 
-
-        protected void btnAanpassen_OnClick(object sender, EventArgs e)
-        {
-            if (Page.IsValid && Session["events"] != null && Session["locaties"] != null)
-            {
-                //Alle locaties en evenementen worden opgehaald.
-                _events = Session["events"] as List<Event>;
-                _locaties = Session["locaties"] as List<Locatie>;
-
-                Event geselecteerdEvent =
-                       _events.Find(
-                           selectedEvent => selectedEvent.ID == Convert.ToInt32(ddlEvenementen.SelectedItem.Value));
-
-                if (geselecteerdEvent != null)
-                {
-                    //Een check of het evenement niet bezig is voordat het aangepast word.
-                    if (DateTime.Now < geselecteerdEvent.DatumEinde && DateTime.Now > geselecteerdEvent.DatumStart)
-                    {
-                        lblErrorLabel.Text = "Je kan het evenement niet aanpassen als het bezig is.";
-                    }
-                    else
-                    {
-                        //Als het niet bezig is word de data aangepast met de ingevoerde data.
-                        lblErrorLabel.Text = "";
-
-                        foreach (Locatie locatie in _locaties)
-                        {
-                            if (Convert.ToInt32(ddlLocaties.SelectedItem.Value) == locatie.ID)
-                            {
-                                geselecteerdEvent.Locatie = locatie;
-                            }
-                        }
-                        geselecteerdEvent.Naam = tbEvenementNaam.Text;
-                        geselecteerdEvent.DatumStart = calStartDatum.SelectedDate;
-                        geselecteerdEvent.DatumEinde = calEindDatum.SelectedDate;
-                        geselecteerdEvent.MaxBezoekers = Convert.ToInt32(tbMaxAantalBezoekers.Text);
-
-                        _eventBeheerController.AanpassenEvent(geselecteerdEvent);
-                        Response.Redirect(Request.RawUrl);
-                    }
-                }
-                else
-                {
-                    //pagina word herladen.
-                    Response.Redirect(Request.RawUrl);
-                }
-            }
-        }
 
         //Validatie om te kijken of de startdatum kalendar is ingevuld.
         protected void calStartDatumValidator_OnServerValidate(object source, ServerValidateEventArgs args)

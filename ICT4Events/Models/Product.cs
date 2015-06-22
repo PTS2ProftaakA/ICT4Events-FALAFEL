@@ -104,12 +104,13 @@ namespace ICT4Events.Models
 
         public void Aanpassen(Database.Database database)
         {
-
+            database.EditDatabase(String.Format(@"UPDATE PRODUCT SET ""productcat_id"" = {0}, ""merk"" = '{1}', ""serie"" = '{2}', ""typenummer"" = {3}, ""prijs"" = {4} WHERE ID = {5}",
+                _productCategorie.ID, _merk, _serie, _typenummer, _prijs, _id));
         }
 
         public void Verwijderen(Database.Database database)
         {
-
+            database.EditDatabase(String.Format("DELETE FROM PRODUCT WHERE ID = {0}", _id));
         }
     }
 }

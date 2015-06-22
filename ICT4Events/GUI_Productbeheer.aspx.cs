@@ -142,7 +142,7 @@ namespace ICT4Events
             //Kijken of de sessie van de producten nog bestaat.
             if (Session["producten"] != null)
             {
-                //Het geselcteerde product word gezicht in de lijst.
+                //Het geselecteerde product word gezicht in de lijst.
                 producten = Session["producten"] as List<Product>;
 
                 Product geselecteerdProduct =
@@ -152,6 +152,8 @@ namespace ICT4Events
                 if (geselecteerdProduct != null)
                 {
                     _productBeheerController.VerwijderProduct(geselecteerdProduct);
+
+                    //pagina word ververst.
                     Response.Redirect(Request.RawUrl);
                 }
             }
@@ -186,11 +188,17 @@ namespace ICT4Events
                         geselecteerdProduct.Typenummer = Convert.ToInt32(tbTypeNummer.Text);
 
                         _productBeheerController.AanpassenProduct(geselecteerdProduct);
+
+                        //pagina word ververst.
+                        Response.Redirect(Request.RawUrl);
                     }
                     else
                     {
                         _productBeheerController.ToevoegenProduct(Convert.ToInt32(ddlProductCategorien.SelectedItem.Value), tbMerk.Text, tbSerie.Text, Convert.ToInt32(tbPrijs.Text), Convert.ToInt32(tbTypeNummer.Text));
                         //Als het niet teruggevonden word, word het aangemaakt met de ingevulde data.
+
+                        //pagina word ververst.
+                        Response.Redirect(Request.RawUrl);
                     }
                 }
             }
@@ -218,6 +226,8 @@ namespace ICT4Events
                     for (int i = 0; i < Convert.ToInt32(tbAantalAanmaken.Text); i++)
                     {
                         _productBeheerController.ToevoegenExemplaar(geselecteerdProduct);
+
+                        //pagina word ververst.
                         Response.Redirect(Request.RawUrl);
                     }
                 }
@@ -246,6 +256,8 @@ namespace ICT4Events
                 if (geselecteerdProductExemplaar != null)
                 {
                     _productBeheerController.VerwijderProductExemplaar(geselecteerdProductExemplaar);
+
+                    //pagina word ververst.
                     Response.Redirect(Request.RawUrl);
                 }
             }
@@ -271,6 +283,8 @@ namespace ICT4Events
                 if (geselecteerdeVerhuring != null)
                 {
                     _productBeheerController.VerwijderVerhuring(geselecteerdeVerhuring);
+
+                    //pagina word ververst.
                     Response.Redirect(Request.RawUrl);
                 }
             }
@@ -297,6 +311,7 @@ namespace ICT4Events
                 {
                     _productBeheerController.VerwijderVerhuring(geselecteerdeVerhuring);
 
+                    //pagina word ververst.
                     Response.Redirect(Request.RawUrl);
                 }
                 else

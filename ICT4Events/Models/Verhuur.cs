@@ -85,7 +85,7 @@ namespace ICT4Events.Models
 
         public void Verwijderen(Database.Database database)
         {
-
+            database.EditDatabase(String.Format("DELETE FROM VERHUUR WHERE ID = {0}", _id));
         }
     }
 }

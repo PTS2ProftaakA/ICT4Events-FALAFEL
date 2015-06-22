@@ -108,12 +108,13 @@ namespace ICT4Events.Models
 
         public void Aanpassen(Database.Database database)
         {
-
+            database.EditDatabase(String.Format(@"UPDATE EVENT SET ""locatie_id"" = {0}, ""naam"" = '{1}', ""datumstart"" = to_date('{2}', 'dd/mm/yyyy HH24:MI:SS'), ""datumEinde"" = to_date('{3}', 'dd/mm/yyyy HH24:MI:SS'), ""maxBezoekers"" = {4} WHERE ID = {5}",
+                _locatie.ID, Naam, DatumStart, DatumEinde, MaxBezoekers, ID));
         }
 
         public void Verwijderen(Database.Database database)
         {
-
+            database.EditDatabase(String.Format("DELETE FROM EVENT WHERE ID = {0}", _id));
         }
     }
 }
