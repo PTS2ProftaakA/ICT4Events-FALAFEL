@@ -166,11 +166,11 @@ namespace ICT4Events.Controllers
 
         //Het verwijderen van een account.
         //Als het niet lukt word er een specifieke error meegegeven door middel van een procedure.
-        public string VerwijderAccount(int accountID)
+        public string VerwijderAccount(string gebruikersNaam)
         {
             List<OracleParameter> inParameters = new List<OracleParameter>();
 
-            inParameters.Add(new OracleParameter("account_id", accountID)); 
+            inParameters.Add(new OracleParameter("gebruikersnaam", gebruikersNaam)); 
             
             List<OracleParameter> outParameters = new List<OracleParameter>();
 
