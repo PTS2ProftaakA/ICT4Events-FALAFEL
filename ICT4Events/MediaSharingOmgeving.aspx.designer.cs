@@ -22,13 +22,13 @@ namespace ICT4Events {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// lbSorteer control.
+        /// lbSorteerCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbSorteer;
+        protected global::System.Web.UI.WebControls.Label lbSorteerCat;
         
         /// <summary>
         /// ddlSearch control.
@@ -38,6 +38,24 @@ namespace ICT4Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSearch;
+        
+        /// <summary>
+        /// lblSorteerExt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSorteerExt;
+        
+        /// <summary>
+        /// ddlExtensionSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlExtensionSearch;
         
         /// <summary>
         /// phBestand control.

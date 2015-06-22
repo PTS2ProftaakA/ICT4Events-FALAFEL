@@ -29,6 +29,7 @@ namespace ICT4Events
                 //Als het geen postback is maak je de placeholder van de categorie met reacties onzichtbaar
                 phCategorieReacties.Visible = false;
                 RefreshCat();
+                RefreshExtensions();
             }
             if (Session["SelectedCategorie"] != null)
             {
@@ -43,7 +44,7 @@ namespace ICT4Events
                 btnRaporteren.Text = reported ? "Gerapporteerd" : "Rapporteer";
                 AddBerichten(id);
             }
-            RefreshBestanden("");
+            RefreshBestanden("", "");
         }
 
 
@@ -113,7 +114,7 @@ namespace ICT4Events
             Label l = (Label) phBestand.FindControl("A" + Convert.ToString(b.ID));
             l.Text = Convert.ToString(tlc.GetLikes(b.ID));
 
-            RefreshBestanden("");
+            RefreshBestanden("", "");
         }
 
         //Deze lijkt heel erg veel op liken.
@@ -178,7 +179,7 @@ namespace ICT4Events
                 btnRaporteren.Text = "Rapporteer";
             }
 
-            RefreshBestanden("");
+            RefreshBestanden("", "");
         }
 
         public void DesignFile(Bestand b)
@@ -450,12 +451,12 @@ namespace ICT4Events
             tvCategorie.ExpandAll();
         }
 
-        public void RefreshBestanden(string input)
+        public void RefreshBestanden(string input, string soort)
         {
             //Voor elk bestand uit de database maak iets aan in de placeholder
-            List<Bestand> bestanden;
+            List<Bestand> bestanden = null;
             //kijken wat de input was, als het niks is dan haal je alles op.
-                if (input == "")
+                if (input == "" && soort == "")
                 {
                     if (Session["Bestanden"] == null)
                     {
@@ -464,14 +465,22 @@ namespace ICT4Events
                     else
                     {
                         bestanden = (List<Bestand>) Session["Bestanden"];
-
                     }
                 }
                 else
                 {
-                    //Als er input is dan haal je de bestanden van die categorieën op.
-                    bestanden = tlc.HaalOpBestanden(input);
-                    Session["Bestanden"] = bestanden;
+                    if (soort == "Cat")
+                    {
+                        //Als er input is dan haal je de bestanden van die categorieën op.
+                        bestanden = tlc.HaalOpBestanden(input);
+                        Session["Bestanden"] = bestanden;
+                    }
+                    else if (soort == "Ext")
+                    {
+                        bestanden = tlc.HaalOpBestandenMetExtensie(input);
+                        Session["Bestanden"] = bestanden;
+                    }
+                    
                 }
             phBestand.Controls.Clear();
             if (bestanden != null)
@@ -527,7 +536,7 @@ namespace ICT4Events
                     //TODO ERROR: uploaden mislukt
                 }
             }
-            RefreshBestanden("");
+            RefreshBestanden("", "");
         }
 
         protected void btnVerwijderCategorie_OnClick(object sender, EventArgs e)
@@ -966,7 +975,7 @@ namespace ICT4Events
             string naam = ddlSearch.SelectedItem.Text;
             if (naam != "Alle")
             {
-                RefreshBestanden(naam);
+                RefreshBestanden(naam, "Cat");
             }
             else
             {
@@ -974,7 +983,42 @@ namespace ICT4Events
                 {
                     Session.Remove("Bestanden");
                 }
-                RefreshBestanden("");
+                RefreshBestanden("", "");
+            }
+        }
+
+        protected void ddlExtensionSearch_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string naam = ddlExtensionSearch.SelectedItem.Text;
+            if (naam != "Alle")
+            {
+                RefreshBestanden(naam, "Ext");
+            }
+            else
+            {
+                if (Session["Bestanden"] != null)
+                {
+                    Session.Remove("Bestanden");
+                }
+                RefreshBestanden("", "");
+            }
+        }
+
+        public void RefreshExtensions()
+        {
+            List<string> extensies = tlc.GetExtensions();
+            ddlExtensionSearch.Items.Clear();
+            ListItem li = new ListItem();
+            li.Text = "Alle";
+            li.Value = "AlleExtensies";
+            //Alle toevoegen aan de 
+            ddlExtensionSearch.Items.Add(li);
+            foreach (string s in extensies)
+            {
+                li = new ListItem();
+                li.Text = s;
+                li.Value = s;
+                ddlExtensionSearch.Items.Add(li);
             }
         }
     }

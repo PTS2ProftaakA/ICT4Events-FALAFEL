@@ -63,6 +63,46 @@ namespace ICT4Events.Controller
             return bestanden;
         }
 
+        public List<Bestand> HaalOpBestandenMetExtensie(string extensie)
+        {
+            //Zoeken naar bestanden met een specificatie
+            List<Bestand> bestanden = new List<Bestand>();
+            #region Query
+            List<string>[] table;
+            //Zoek op de ingegeven extensie
+            string query = String.Format(@"SELECT B.""bijdrage_id"", B.""categorie_id"", B.""bestandslocatie"", B.""grootte"", BD.""account_id"", TO_CHAR(BD.""datum"", 'dd-mm-yy HH24:MI:SS') AS DATUM FROM BESTAND B, BIJDRAGE BD WHERE B.""bijdrage_id"" = BD.ID AND B.""bestandslocatie"" LIKE '%{0}'", extensie);
+
+            List<string> kolommen = new List<string>();
+            kolommen.Add("BIJDRAGE_ID");
+            kolommen.Add("CATEGORIE_ID");
+            kolommen.Add("BESTANDSLOCATIE");
+            kolommen.Add("GROOTTE");
+            kolommen.Add("ACCOUNT_ID");
+            kolommen.Add("DATUM");
+
+            table = database.SelectQuery(query, kolommen);
+            #endregion
+
+            if (table[0].Count > 1)
+            {
+                for (int i = 1; i < table[0].Count; i++)
+                {
+                    int bijdrageId = Convert.ToInt32(table[0][i]);
+                    int categorieId = Convert.ToInt32(table[1][i]);
+                    string locatie = Convert.ToString(table[2][i]);
+                    int grootte = Convert.ToInt32(table[3][i]);
+                    int accountId = Convert.ToInt32(table[4][i]);
+                    DateTime datum = DateTime.Parse(Convert.ToString(table[5][i]));
+
+                    Account acc = Account.Get(accountId, database);
+                    Categorie c = Categorie.Get(categorieId, database);
+                    Bestand b = new Bestand(bijdrageId, acc, datum, Bijdrage.BijdrageType.Bestand, c, locatie, grootte);
+                    bestanden.Add(b);
+                }
+            }
+            return bestanden;
+        }
+
         public List<Categorie> HaalAlleOpCategorieën()
         {
             //Alle categorieën ophalen
@@ -322,6 +362,28 @@ namespace ICT4Events.Controller
             query = String.Format(@"INSERT INTO BIJDRAGE_BERICHT(""bijdrage_id"", ""bericht_id"") VALUES({0}, {1})", b_id, id);
             database.EditDatabase(query);
 
+        }
+
+        public List<string> GetExtensions()
+        {
+            List<string> extensies = new List<string>();
+            List<string>[] table;
+            List<string> kolommen = new List<string>();
+            kolommen.Add("EXTENTIE");
+            string query = @"SELECT DISTINCT(substr(""bestandslocatie"", instr(""bestandslocatie"", '.', -1))) AS EXTENTIE FROM BESTAND";
+
+            table = database.SelectQuery(query, kolommen);
+
+            if (table[0].Count > 1)
+            {
+                for (int i=1; i < table[0].Count; i++)
+                {
+                    string extensie = Convert.ToString(table[0][i]);
+                    extensies.Add(extensie);
+                }
+            }
+
+            return extensies;
         }
     }
 }
