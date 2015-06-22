@@ -202,10 +202,10 @@ namespace ICT4Events
             Label l = new Label();
             l.Text = Path.GetFileNameWithoutExtension(b.BestandsLocatie);
             p.Controls.Add(l);
+            p.Controls.Add(new LiteralControl("<br />"));
             //Hier kijken we welke extensie het is en handelen we het zo af.
             if (extension == ".jpg" || extension == ".png")
             {
-                p.Controls.Add(new LiteralControl("<br />"));
                 var i = new System.Web.UI.WebControls.Image {ImageUrl = path};
                 i.AlternateText = b.BestandsLocatie;
                 i.Height = 100;
@@ -214,10 +214,36 @@ namespace ICT4Events
             }
             else if (extension == ".mp3")
             {
-                p.Controls.Add(new LiteralControl("<br />"));
                 var s = new LiteralControl(@"<audio src=""" + path + @""" controls=""controls""></audio> ");
                 p.Controls.Add(s);
                 p.Height = 175;
+            }
+            else if (extension == ".mp4")
+            {
+                var v = new LiteralControl(@"<video height=""100"" controls><source src=""" + path + @"""></video>");
+                p.Controls.Add(v);
+                p.Height = 250;
+            }
+            else if (extension == ".txt")
+            {
+                Label lblTxt = new Label();
+                string pathToBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                try
+                {
+                    using (StreamReader sr = new StreamReader(pathToBaseDirectory + path))
+                    {
+                        string line = sr.ReadToEnd();
+                        lblTxt.Text = line;
+                        p.Controls.Add(lblTxt);
+                        p.Height = 250;
+                        //Console.WriteLine(line);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //Console.WriteLine("The file could not be read:");
+                    //Console.WriteLine(e.Message);
+                }
             }
             else
             {
