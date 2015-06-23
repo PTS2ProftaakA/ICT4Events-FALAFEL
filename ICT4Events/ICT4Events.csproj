@@ -70,9 +70,9 @@
     <Content Include="Content\roboto.css" />
     <Content Include="Content\roboto.min.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Eventbeheer.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\Material-Design-Icons.svg" />
-    <Content Include="GUI_Eventbeheer.aspx" />
     <Content Include="GUI_Productbeheer.aspx" />
     <Content Include="GUI_Verificatie.aspx" />
     <Content Include="Icon.png" />
@@ -162,15 +162,15 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="GUI_Eventbeheer.aspx.cs">
-      <DependentUpon>GUI_Eventbeheer.aspx</DependentUpon>
+    <Compile Include="Eventbeheer.aspx.cs">
+      <DependentUpon>Eventbeheer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="GUI_Eventbeheer.aspx.designer.cs">
-      <DependentUpon>GUI_Eventbeheer.aspx</DependentUpon>
+    <Compile Include="Eventbeheer.aspx.designer.cs">
+      <DependentUpon>Eventbeheer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GUI_Productbeheer.aspx.cs">
       <DependentUpon>GUI_Productbeheer.aspx</DependentUpon>

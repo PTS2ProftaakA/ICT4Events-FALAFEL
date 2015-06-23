@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using ICT4Events.Controllers;
 using ICT4Events.Models;
 
 namespace ICT4Events
 {
-    public partial class GUI_Eventbeheer : System.Web.UI.Page
+    public partial class Eventbeheer : System.Web.UI.Page
     {
         //Controller om al het dataverkeer tussen deze en de datalaag te regelen.
         private EventBeheerController _eventBeheerController;
@@ -17,7 +14,7 @@ namespace ICT4Events
         //Lijsten voor de locaties en de evenementen.
         private List<Locatie> _locaties;
         private List<Event> _events;
-        public GUI_Eventbeheer()
+        public Eventbeheer()
         {
             _eventBeheerController = new EventBeheerController();
         }
