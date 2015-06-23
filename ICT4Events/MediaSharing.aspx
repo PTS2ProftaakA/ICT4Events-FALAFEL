@@ -4,12 +4,12 @@
         <div>
             <div class="col-lg-6">
                 <asp:Label ID="lbSorteerCat" runat="server" Text="Sorteer op Categorie:" />
-                <asp:DropDownList ID="ddlSearch" runat="server" OnSelectedIndexChanged="ddlSearch_OnSelectedIndexChanged" AutoPostBack="True">
+                <asp:DropDownList ID="ddlSearch" CssClass="form-control" runat="server" OnSelectedIndexChanged="ddlSearch_OnSelectedIndexChanged" AutoPostBack="True">
                     <asp:ListItem Text="Alles" Value="AlleCategorie" />
                 </asp:DropDownList>
                 <br/><br/>
                 <asp:Label ID="lblSorteerExt" runat="server" Text="Sorteer op Extentie:" />
-                <asp:DropDownList ID="ddlExtensionSearch" runat="server" OnSelectedIndexChanged="ddlExtensionSearch_OnSelectedIndexChanged" AutoPostBack="True">
+                <asp:DropDownList ID="ddlExtensionSearch" CssClass="form-control" runat="server" OnSelectedIndexChanged="ddlExtensionSearch_OnSelectedIndexChanged" AutoPostBack="True">
                     <asp:ListItem Text="Alles" Value="AlleExtensies" />
                 </asp:DropDownList>
                 <br/><br/>
@@ -19,7 +19,7 @@
                 <asp:TreeView ID="tvCategorie" runat="server" HoverNodeStyle-ForeColor="Red" OnSelectedNodeChanged="tvCategorie_OnSelectedNodeChanged">
                     <SelectedNodeStyle Font-Bold="True" />
                 </asp:TreeView>
-                <br/><br/>
+                <br/><br/><br/>
                 <div class="form-group">
                     <asp:Label ID="lbCategorieNaam" runat="server" Text="Categorie naam:" /><br/>
                     <asp:TextBox ID="txtCategorie" CssClass="form-control" runat="server" AutoCompleteType="Disabled" />
@@ -30,7 +30,7 @@
                     <asp:Button ID="btnMaakCategorie" CssClass="btn btn-primary" onClick="btnMaakCategorie_OnClick" runat="server" Text="Maak Categorie" ValidationGroup="nieuweCategorie"/>
                     <asp:Button ID="btnVerwijderCategorie" CssClass="btn btn-flat btn-primary" OnClick="btnVerwijderCategorie_OnClick" runat="server" Text="Verwijder Categorie" />
                 </div>
-                <br/><br/>
+                <br/><br/><br/>
                 <div class="input-group">
                     <input type="file" class="form-control" id="fileInput" runat="server"/>
                     <span class="input-group-btn">
