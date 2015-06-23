@@ -31,7 +31,7 @@ namespace ICT4Events.Controllers
             //De inhoud van het bericht.
             //De html is aangezet zodat er opmaak toegepast kan worden.
             string htmlBody = String.Format("Geachte {0},<br /> <br /> Je hebt deze mail gekregen om je te verifiëren voor het evenement." +
-                                      "<br /> <br /> <a href=\"http://localhost:1687/GUI_Verificatie.aspx/{1}\">Klik hier om te verifiëren.</a>" +
+                                      "<br /> <br /> <a href=\"http://192.168.20.28:80/GUI_Verificatie.aspx/{1}\">Klik hier om te verifiëren.</a>" +
                                       "<br /> <br /> Hieronder staat de barcode die je polsbandje zal hebben op het evenement," +
                                       "<br /> Laat hem scannen bij de incheckbalie om je polsbandje te verkrijgen." +
                                       "<br /> <br /><img src=\"cid:pictureBarcode\">" +
