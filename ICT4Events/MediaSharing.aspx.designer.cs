@@ -10,16 +10,16 @@
 namespace ICT4Events {
     
     
-    public partial class MediaSharingOmgeving {
+    public partial class MediaSharing {
         
         /// <summary>
-        /// form1 control.
+        /// formMedia control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm formMedia;
         
         /// <summary>
         /// lbSorteerCat control.

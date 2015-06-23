@@ -73,17 +73,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\Material-Design-Icons.svg" />
     <Content Include="GUI_Eventbeheer.aspx" />
-    <Content Include="GUI_NieuweGebruiker_Gegevens.aspx" />
-    <Content Include="GUI_NieuweGebruiker_Kaart.aspx" />
-    <Content Include="GUI_NieuweGebruiker_Producten.aspx" />
-    <Content Include="GUI_NieuweGebruiker_Samenvatting.aspx" />
-    <Content Include="GUI_NieuweGebruiker_Vrienden.aspx" />
     <Content Include="GUI_Productbeheer.aspx" />
     <Content Include="GUI_Verificatie.aspx" />
     <Content Include="Icon.png" />
     <Content Include="Inloggen.aspx" />
     <Content Include="MediaPost.aspx" />
-    <Content Include="MediaSharingOmgeving.aspx" />
+    <Content Include="MediaSharing.aspx" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -177,41 +172,6 @@
     <Compile Include="GUI_Eventbeheer.aspx.designer.cs">
       <DependentUpon>GUI_Eventbeheer.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Gegevens.aspx.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Gegevens.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Gegevens.aspx.designer.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Gegevens.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Kaart.aspx.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Kaart.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Kaart.aspx.designer.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Kaart.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Producten.aspx.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Producten.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Producten.aspx.designer.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Producten.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Samenvatting.aspx.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Samenvatting.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Samenvatting.aspx.designer.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Samenvatting.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Vrienden.aspx.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Vrienden.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GUI_NieuweGebruiker_Vrienden.aspx.designer.cs">
-      <DependentUpon>GUI_NieuweGebruiker_Vrienden.aspx</DependentUpon>
-    </Compile>
     <Compile Include="GUI_Productbeheer.aspx.cs">
       <DependentUpon>GUI_Productbeheer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -247,12 +207,12 @@
     <Compile Include="MediaPost.aspx.designer.cs">
       <DependentUpon>MediaPost.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MediaSharingOmgeving.aspx.cs">
-      <DependentUpon>MediaSharingOmgeving.aspx</DependentUpon>
+    <Compile Include="MediaSharing.aspx.cs">
+      <DependentUpon>MediaSharing.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MediaSharingOmgeving.aspx.designer.cs">
-      <DependentUpon>MediaSharingOmgeving.aspx</DependentUpon>
+    <Compile Include="MediaSharing.aspx.designer.cs">
+      <DependentUpon>MediaSharing.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Account_Bijdrage.cs" />

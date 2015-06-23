@@ -17,6 +17,7 @@
                 </div>
                 <div class="navbar-collapse collapse navbar-responsive-collapse">
                     <ul class="nav navbar-nav">
+                        <li><a href="MediaSharing.aspx">Media Sharing</a></li>
                         <li><a href="Bestandsbeheer.aspx">Bestandsbeheer</a></li>
                         <li><a href="#" id="uitloggen" runat="server">Uitloggen</a></li>
                     </ul>

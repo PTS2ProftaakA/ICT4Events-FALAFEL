@@ -1,6 +1,4 @@
-﻿using ICT4Events.Models;
-using ICT4Events.Controller;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -8,10 +6,12 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ICT4Events.Controller;
+using ICT4Events.Models;
 
 namespace ICT4Events
 {
-    public partial class MediaSharingOmgeving : System.Web.UI.Page
+    public partial class MediaSharing : System.Web.UI.Page
     {
 
         Database.Database database = new Database.Database();
@@ -23,8 +23,8 @@ namespace ICT4Events
             {
                 Response.Redirect("Inloggen.aspx");
             }
-            
-            
+
+
             //Hier voegen we een click event toe als we een file uploaden
             fileSubmit.ServerClick += btnMaakBestand_OnClick;
             database.Connect();
@@ -42,7 +42,7 @@ namespace ICT4Events
                 //Hier zorgen we ervoor dat de placeholder van de categorie met reacties goed worden weergeven
                 phCategorieReacties.Visible = true;
                 int id = (int)Session["SelectedCategorie"];
-                lbCatNaam.Text = (string) Session["SelectedCategorieNaam"];
+                lbCatNaam.Text = (string)Session["SelectedCategorieNaam"];
                 lbCounter.Text = Convert.ToString(tlc.GetLikes(id));
                 bool liked = tlc.AlreadyExists(id, acc.ID, "like");
                 bool reported = tlc.AlreadyExists(id, acc.ID, "ongewenst");
@@ -58,7 +58,7 @@ namespace ICT4Events
         {
             //Omdat het dynamically gecreëert is zetten we de sender als een knop
             Button btnLiken = sender as Button;
-            
+
             //TODO Haal hier je Account uit een cookie/session
             Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             //Haal het bestand op, dit doen we met het ID van de button.
@@ -71,7 +71,7 @@ namespace ICT4Events
             bool reported = tlc.AlreadyExists(b.ID, acc.ID, "ongewenst");
 
             //Je maakt hier de like/ongewenst aan of verwijder je hem.
-            
+
             if (!liked)
             {
                 Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, true, reported);
@@ -84,7 +84,7 @@ namespace ICT4Events
                     }
                     else
                     {
-                        ab.Aanpassen(database);   
+                        ab.Aanpassen(database);
                     }
                     //Hier zet je de text van de knop andersom voor de zekerheid.
                     btnLiken.Text = "Unlike";
@@ -117,7 +117,7 @@ namespace ICT4Events
                 }
             }
             //Hier zoek je het juiste label en dan zet je de likes goed.
-            Label l = (Label) phBestand.FindControl("A" + Convert.ToString(b.ID));
+            Label l = (Label)phBestand.FindControl("A" + Convert.ToString(b.ID));
             l.Text = Convert.ToString(tlc.GetLikes(b.ID));
 
             RefreshBestanden("", "");
@@ -153,7 +153,7 @@ namespace ICT4Events
                     }
                     else
                     {
-                        ab.Aanpassen(database);    
+                        ab.Aanpassen(database);
                     }
                 }
                 catch (Exception ex)
@@ -193,15 +193,14 @@ namespace ICT4Events
             //Maak het panel aan
             Panel p = new Panel();
             p.BorderColor = Color.Black;
-            p.BorderStyle = BorderStyle.Solid;
-            p.BorderWidth = 1;
+            //p.BorderStyle = BorderStyle.Solid;
+            //p.BorderWidth = 1;
             p.Height = 250;
-            p.Width = 640;
+            //p.Width = 640;
 
             Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
 
             //Check of er al een Like is -- Voor nu gebruik ik user ID 4, dit moet later worden vervangen door het echte user id
-            //TODO vervang 4 door het echte user ID.
             bool liked = tlc.AlreadyExists(b.ID, acc.ID, "like");
             bool reported = tlc.AlreadyExists(b.ID, acc.ID, "ongewenst");
             //Zet het juiste bestand erin.
@@ -215,7 +214,7 @@ namespace ICT4Events
             //Hier kijken we welke extensie het is en handelen we het zo af.
             if (extension == ".jpg" || extension == ".png")
             {
-                var i = new System.Web.UI.WebControls.Image {ImageUrl = path};
+                var i = new System.Web.UI.WebControls.Image { ImageUrl = path };
                 i.AlternateText = b.BestandsLocatie;
                 i.Height = 100;
                 p.Controls.Add(i);
@@ -264,7 +263,7 @@ namespace ICT4Events
             Button btnLike = new Button();
             //De tekst moet zijn Like als deze gebruiker deze post nog niet heeft leuk gevonden, anders moet het unlinke zijn.
             btnLike.Text = liked ? "Unlike" : "Like";
-            btnLike.ID = "L" +Convert.ToString(b.ID);
+            btnLike.ID = "L" + Convert.ToString(b.ID);
             btnLike.Click += btnLiken_Click;
             Button btnRapport = new Button();
             btnRapport.Text = reported ? "Gerapporteerd" : "Rapporteer";
@@ -373,7 +372,7 @@ namespace ICT4Events
                                 return;
                             }
                         }
-                        
+
                     }
                     tlc.MaakCategorie(catText, c);
                 }
@@ -414,7 +413,7 @@ namespace ICT4Events
                     ddlCategorie.Items.Add(li);
 
                 }
-            } 
+            }
         }
 
         private void GetChildRows(Categorie cat, TreeNode tn)
@@ -440,7 +439,7 @@ namespace ICT4Events
                         GetChildRows(childCategorie, childTreeNode);
                     }
                 }
-            }    
+            }
         }
 
         public void RefreshCat()
@@ -473,32 +472,32 @@ namespace ICT4Events
             //Voor elk bestand uit de database maak iets aan in de placeholder
             List<Bestand> bestanden = null;
             //kijken wat de input was, als het niks is dan haal je alles op.
-                if (input == "" && soort == "")
+            if (input == "" && soort == "")
+            {
+                if (Session["Bestanden"] == null)
                 {
-                    if (Session["Bestanden"] == null)
-                    {
-                        bestanden = tlc.HaalOpBestanden("");
-                    }
-                    else
-                    {
-                        bestanden = (List<Bestand>) Session["Bestanden"];
-                    }
+                    bestanden = tlc.HaalOpBestanden("");
                 }
                 else
                 {
-                    if (soort == "Cat")
-                    {
-                        //Als er input is dan haal je de bestanden van die categorieën op.
-                        bestanden = tlc.HaalOpBestanden(input);
-                        Session["Bestanden"] = bestanden;
-                    }
-                    else if (soort == "Ext")
-                    {
-                        bestanden = tlc.HaalOpBestandenMetExtensie(input);
-                        Session["Bestanden"] = bestanden;
-                    }
-                    
+                    bestanden = (List<Bestand>)Session["Bestanden"];
                 }
+            }
+            else
+            {
+                if (soort == "Cat")
+                {
+                    //Als er input is dan haal je de bestanden van die categorieën op.
+                    bestanden = tlc.HaalOpBestanden(input);
+                    Session["Bestanden"] = bestanden;
+                }
+                else if (soort == "Ext")
+                {
+                    bestanden = tlc.HaalOpBestandenMetExtensie(input);
+                    Session["Bestanden"] = bestanden;
+                }
+
+            }
             phBestand.Controls.Clear();
             if (bestanden != null)
                 foreach (Bestand b in bestanden)
@@ -526,7 +525,7 @@ namespace ICT4Events
                 //Haal de extensie van het bestand op.
                 string extension = Path.GetExtension(fileInput.PostedFile.FileName);
                 //Controleer hier op alle extensies die je er niet in wilt hebben.
-                if(extension == ".gliffy")
+                if (extension == ".gliffy")
                 {
                     //TODO ERROR: Verboden extensie
                     Response.Write("<script>alert('Deze extensie is niet toegestaan.')</script>");
@@ -586,7 +585,7 @@ namespace ICT4Events
             Session["SelectedCategorieNaam"] = lbCatNaam.Text;
             AddBerichten(id);
 
-            
+
         }
 
         protected void btnLikeCategorie_OnClick(object sender, EventArgs e)
@@ -596,13 +595,13 @@ namespace ICT4Events
             Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
 
             //Haal het id uit de sessie
-            int id = (int) Session["SelectedCategorie"];
+            int id = (int)Session["SelectedCategorie"];
             Categorie c = Categorie.Get(id, database);
 
 
             bool liked = tlc.AlreadyExists(c.ID, acc.ID, "like");
             bool reported = tlc.AlreadyExists(c.ID, acc.ID, "ongewenst");
-            
+
             //Hier zet je de text van de knop andersom.
             if (!liked)
             {
@@ -825,7 +824,7 @@ namespace ICT4Events
                         phBerichten.Controls.Add(btnReactie);
                         phBerichten.Controls.Add(new LiteralControl("<br />"));
                         phBerichten.Controls.Add(new LiteralControl("<br />"));
-#endregion
+                        #endregion
                     }
                     else
                     {
@@ -844,7 +843,7 @@ namespace ICT4Events
                         phBerichten.Controls.Add(btnReactie);
                         phBerichten.Controls.Add(new LiteralControl("<br />"));
                         phBerichten.Controls.Add(new LiteralControl("<br />"));
-#endregion
+                        #endregion
                     }
                 }
             }
@@ -890,7 +889,7 @@ namespace ICT4Events
 
                 bool liked = tlc.AlreadyExists(b.ID, acc.ID, "like");
                 bool reported = tlc.AlreadyExists(b.ID, acc.ID, "ongewenst");
-                
+
                 if (!reported)
                 {
                     Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, liked, true);
@@ -953,7 +952,7 @@ namespace ICT4Events
 
                 bool liked = tlc.AlreadyExists(b.ID, acc.ID, "like");
                 bool reported = tlc.AlreadyExists(b.ID, acc.ID, "ongewenst");
-                
+
                 //Hier zet je de text van de knop andersom.
                 if (!liked)
                 {
@@ -998,7 +997,7 @@ namespace ICT4Events
                     }
                 }
             }
-            int cId = (int) Session["SelectedCategorie"];
+            int cId = (int)Session["SelectedCategorie"];
             AddBerichten(cId);
         }
 
