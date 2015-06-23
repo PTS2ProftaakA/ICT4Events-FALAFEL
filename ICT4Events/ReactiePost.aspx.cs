@@ -29,7 +29,7 @@ namespace ICT4Events
             }
             else
             {
-                Response.Redirect("MediaSharingOmgeving.aspx");
+                Response.Redirect("MediaSharing.aspx");
             }
         }
 
@@ -84,7 +84,7 @@ namespace ICT4Events
         private void BtnVerwijderenOnClick(object sender, EventArgs eventArgs)
         {
             _b.Verwijderen(database);
-            Response.Redirect("MediaSharingOmgeving.aspx");
+            Response.Redirect("MediaSharing.aspx");
         }
 
         protected void btnLike_OnClick(object sender, EventArgs e)

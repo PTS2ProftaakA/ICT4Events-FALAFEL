@@ -32,7 +32,7 @@ namespace ICT4Events
             }
             else
             {
-                Response.Redirect("MediaSharingOmgeving.aspx");
+                Response.Redirect("MediaSharing.aspx");
             }
         }
 
@@ -98,7 +98,7 @@ namespace ICT4Events
             else
             {
                 Response.Write("<script>alert('Deze Extensie wordt niet herkent')</script>");
-                Response.Redirect("MediaSharingOmgeving.aspx");
+                Response.Redirect("MediaSharing.aspx");
             }
 
             if (_b.Account.ID == acc.ID)
@@ -125,7 +125,7 @@ namespace ICT4Events
         void btnVerwijderen_Click(object sender, EventArgs e)
         {
             _b.Verwijderen(database);
-            Response.Redirect("MediaSharingOmgeving.aspx");
+            Response.Redirect("MediaSharing.aspx");
         }
 
 

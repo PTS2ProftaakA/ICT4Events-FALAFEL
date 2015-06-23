@@ -571,7 +571,7 @@ namespace ICT4Events
             c.Verwijderen(database);
             //Haal de sessie weg en ga herlaad de pagina.
             Session.Remove("SelectedCategorie");
-            Response.Redirect("MediaSharingOmgeving.aspx");
+            Response.Redirect("MediaSharing.aspx");
         }
 
         protected void tvCategorie_OnSelectedNodeChanged(object sender, EventArgs e)
