@@ -36,9 +36,11 @@ namespace ICT4Events
 
         public void DesignFile()
         {
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
+            
             //Check of er al een Like is -- Voor nu gebruik ik user ID 4, dit moet later worden vervangen door het echte user id
-            bool liked = tlc.AlreadyExists(_b.ID, 4, "like");
-            bool reported = tlc.AlreadyExists(_b.ID, 4, "ongewenst");
+            bool liked = tlc.AlreadyExists(_b.ID, acc.ID, "like");
+            bool reported = tlc.AlreadyExists(_b.ID, acc.ID, "ongewenst");
             //De image
             lbUsername.Text = "Door: " +_b.Account.Gebruikersnaam;
 
@@ -58,7 +60,7 @@ namespace ICT4Events
             phReactie.Controls.Add(new LiteralControl("<br/>"));
             //De verwijder knop.
             Account sessionAccount = (Account)Session["User"];
-            if (_b.Account.ID == sessionAccount.ID)
+            if (_b.Account.ID == acc.ID)
             {
                 phVerwijder.Controls.Clear();
                 Button btnVerwijderen = new Button();
@@ -93,11 +95,10 @@ namespace ICT4Events
 
             bool liked = tlc.AlreadyExists(_b.ID, acc.ID, "like");
             bool reported = tlc.AlreadyExists(_b.ID, acc.ID, "ongewenst");
-            //Dit moet je werkelijk waar aanmaken, nadat je de account_bijdrage hebt aangemaakt voeg je die toe aan de database.
-            Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, true, reported);
-            //Hier zet je de text van de knop andersom.
+            
             if (!liked)
             {
+                Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, true, reported);
                 //Hier voeg je hem toe aan de database
                 try
                 {
@@ -118,10 +119,18 @@ namespace ICT4Events
             }
             else if (liked)
             {
+                Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, false, reported);
                 //Hier verwijder je de Account_Bijdrage weer
                 try
                 {
-                    ab.Verwijderen(database);
+                    if (!reported)
+                    {
+                        ab.Verwijderen(database);
+                    }
+                    else
+                    {
+                        ab.Aanpassen(database);
+                    }
                     btnLike.Text = "Like";
                 }
                 catch (Exception ex)
@@ -139,9 +148,10 @@ namespace ICT4Events
             bool liked = tlc.AlreadyExists(_b.ID, acc.ID, "like");
             bool reported = tlc.AlreadyExists(_b.ID, acc.ID, "ongewenst");
             //Dit moet je werkelijk waar aanmaken, nadat je de account_bijdrage hebt aangemaakt voeg je die toe aan de database.
-            Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, liked, true);
+            
             if (!reported)
             {
+                Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, liked, true);
                 try
                 {
                     if (!liked)
@@ -161,9 +171,17 @@ namespace ICT4Events
             }
             else if (reported)
             {
+                Account_Bijdrage ab = new Account_Bijdrage(1, acc, _b, liked, false);
                 try
                 {
-                    ab.Verwijderen(database);
+                    if (!liked)
+                    {
+                        ab.Verwijderen(database);
+                    }
+                    else
+                    {
+                        ab.Aanpassen(database);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -214,12 +232,13 @@ namespace ICT4Events
         {
             phBerichten.Controls.Clear();
             List<Bericht> berichten = tlc.Getberichten(_b.ID);
+            Account acc = Account.Get(HttpContext.Current.User.Identity.Name, database);
             if (berichten != null)
             {
                 foreach (Bericht br in berichten)
                 {
-                    bool liked = tlc.AlreadyExists(br.ID, 4, "like");
-                    bool reported = tlc.AlreadyExists(br.ID, 4, "ongewenst");
+                    bool liked = tlc.AlreadyExists(br.ID, acc.ID, "like");
+                    bool reported = tlc.AlreadyExists(br.ID, acc.ID, "ongewenst");
 
                     Label accountNaam = new Label();
                     accountNaam.Text = "Door: " + br.Account.Gebruikersnaam;
@@ -251,8 +270,7 @@ namespace ICT4Events
                     btnReactie.Click += btnReactie_Click;  
                         
                     //Button voor het verwijderen
-                    Account sessionAccount = (Account)Session["User"];
-                    if (br.Account.ID == sessionAccount.ID)
+                    if (br.Account.ID == acc.ID)
                     {
                         Button btnBerichtVerwijderen = new Button();
                         btnBerichtVerwijderen.Text = "X";
@@ -299,7 +317,11 @@ namespace ICT4Events
 
         void btnReactie_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Button btn = sender as Button;
+            int ID = Convert.ToInt32(btn.ID.Substring(7));
+            Bericht b = Bericht.Get(ID, database);
+            Session["Reactie"] = b;
+            Response.Redirect("~/ReactiePost.aspx");
         }
 
         void btnBerichtVerwijderen_Click(object sender, EventArgs e)
@@ -387,10 +409,11 @@ namespace ICT4Events
                 bool liked = tlc.AlreadyExists(b.ID, acc.ID, "like");
                 bool reported = tlc.AlreadyExists(b.ID, acc.ID, "ongewenst");
                 //Dit moet je werkelijk waar aanmaken, nadat je de account_bijdrage hebt aangemaakt voeg je die toe aan de database.
-                Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, true, reported);
+                
                 //Hier zet je de text van de knop andersom.
                 if (!liked)
                 {
+                    Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, true, reported);
                     //Hier voeg je hem toe aan de database
                     try
                     {
@@ -411,10 +434,18 @@ namespace ICT4Events
                 }
                 else if (liked)
                 {
+                    Account_Bijdrage ab = new Account_Bijdrage(1, acc, b, false, reported);
                     //Hier verwijder je de Account_Bijdrage weer
                     try
                     {
-                        ab.Verwijderen(database);
+                        if (!reported)
+                        {
+                            ab.Verwijderen(database);
+                        }
+                        else
+                        {
+                            ab.Aanpassen(database);
+                        }
                         btnLike.Text = "Like";
                     }
                     catch (Exception ex)
