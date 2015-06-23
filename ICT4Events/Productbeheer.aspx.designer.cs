@@ -10,25 +10,16 @@
 namespace ICT4Events {
     
     
-    public partial class GUI_Productbeheer {
+    public partial class Productbeheer {
         
         /// <summary>
-        /// form1 control.
+        /// formProducten control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
-        /// lblProducten control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblProducten;
+        protected global::System.Web.UI.HtmlControls.HtmlForm formProducten;
         
         /// <summary>
         /// ddlProducten control.

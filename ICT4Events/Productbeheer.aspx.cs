@@ -7,7 +7,7 @@ using ICT4Events.Models;
 
 namespace ICT4Events
 {
-    public partial class GUI_Productbeheer : System.Web.UI.Page
+    public partial class Productbeheer : System.Web.UI.Page
     {
         private ProductBeheerController _productBeheerController;
 
@@ -15,7 +15,7 @@ namespace ICT4Events
         private List<ProductCat> productCategorien;
         private List<Product> producten;
         private List<ProductExemplaar> productExemplaren;
-        private List<Verhuur> verhuringen; 
+        private List<Verhuur> verhuringen;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -97,7 +97,7 @@ namespace ICT4Events
         protected void ddlProducten_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             //Kijken of de sessie van de producten nog bestaat.
-            if(Session["producten"] != null)
+            if (Session["producten"] != null)
             {
                 //Het geselcteerde product word gezicht in de lijst.
                 producten = Session["producten"] as List<Product>;
